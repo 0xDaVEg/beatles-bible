@@ -19,11 +19,14 @@ function Search() {
     }
 
     const q = query.toLowerCase();
-    const matches: any[] = [];
+    const songMatches: any[] = [];
+    const albumMatches: any[] = [];
+    const personMatches: any[] = [];
+    const historyMatches: any[] = [];
 
     historyData.forEach((item: any) => {
       if (item.title.toLowerCase().includes(q)) {
-        matches.push({
+        historyMatches.push({
           type: 'History',
           title: item.title,
           subtitle: item.date,
@@ -34,7 +37,7 @@ function Search() {
 
     songsData.forEach((item: any) => {
       if (item.title.toLowerCase().includes(q)) {
-        matches.push({
+        songMatches.push({
           type: 'Song',
           title: item.title,
           subtitle: item.title,
@@ -45,7 +48,7 @@ function Search() {
 
     albumsData.forEach((item: any) => {
       if (item.title.toLowerCase().includes(q)) {
-        matches.push({
+        albumMatches.push({
           type: 'Album',
           title: item.title,
           subtitle: item.title,
@@ -56,7 +59,7 @@ function Search() {
 
     peopleData.forEach((item: any) => {
       if (item.title.toLowerCase().includes(q)) {
-        matches.push({
+        personMatches.push({
           type: 'Person',
           title: item.title,
           subtitle: item.title,
@@ -65,7 +68,8 @@ function Search() {
       }
     });
 
-    setResults(matches.slice(0, 20));
+    const matches = [...songMatches, ...albumMatches, ...personMatches, ...historyMatches];
+    setResults(matches.slice(0, 30));
     setShowResults(true);
   }, [query]);
 
