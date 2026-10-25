@@ -21,7 +21,6 @@ function Search() {
     const q = query.toLowerCase();
     const songMatches: any[] = [];
     const albumMatches: any[] = [];
-    const personMatches: any[] = [];
     const historyMatches: any[] = [];
 
     historyData.forEach((item: any) => {
@@ -57,18 +56,7 @@ function Search() {
       }
     });
 
-    peopleData.forEach((item: any) => {
-      if (item.title.toLowerCase().includes(q)) {
-        personMatches.push({
-          type: 'Person',
-          title: item.title,
-          subtitle: item.title,
-          path: item.url.replace('https://www.beatlesbible.com', '')
-        });
-      }
-    });
-
-    const matches = [...songMatches, ...albumMatches, ...personMatches, ...historyMatches];
+    const matches = [...songMatches, ...albumMatches, ...historyMatches];
     setResults(matches.slice(0, 30));
     setShowResults(true);
   }, [query]);
@@ -78,7 +66,7 @@ function Search() {
       <input
         type="text"
         className="search-input"
-        placeholder="Search songs, albums, people..."
+        placeholder="Search songs, albums, history..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         onBlur={() => setTimeout(() => setShowResults(false), 200)}
