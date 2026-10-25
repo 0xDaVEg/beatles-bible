@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import historyData from '../data/history.json';
 import songsData from '../data/songs.json';
 import albumsData from '../data/albums.json';
-import peopleData from '../data/people.json';
 import './Search.css';
 
 function Search() {
