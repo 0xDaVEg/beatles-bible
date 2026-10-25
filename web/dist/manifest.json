@@ -1,0 +1,9 @@
+{
+  "name": "The Beatles Bible Archive",
+  "short_name": "Beatles Bible",
+  "start_url": "/beatles-bible/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1a1a",
+  "icons": []
+}
