@@ -8,6 +8,7 @@ import AlbumsList from './pages/AlbumsList';
 import AlbumDetail from './pages/AlbumDetail';
 import PeopleList from './pages/PeopleList';
 import PersonDetail from './pages/PersonDetail';
+import Search from './components/Search';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <nav className="nav">
           <div className="nav-container">
             <Link to="/" className="nav-logo">Beatles Bible Archive</Link>
+            <Search />
             <div className="nav-links">
               <Link to="/history">History</Link>
               <Link to="/songs">Songs</Link>
