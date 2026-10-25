@@ -1,0 +1,23 @@
+{
+  "name": "beatles-bible-scraper",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "discover": "tsx src/discover.ts",
+    "scrape": "tsx src/scrape.ts",
+    "normalize": "tsx src/normalize.ts"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
+    "fs-extra": "^11.2.0",
+    "p-queue": "^8.0.1",
+    "url-join": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.7.4",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2"
+  }
+}

@@ -1,0 +1,63 @@
+.home h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #1a1a1a;
+}
+
+.home-description {
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.home-sections {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.home-card {
+  display: block;
+  padding: 1.25rem;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.home-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-color: #ccc;
+}
+
+.home-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+  color: #1a1a1a;
+}
+
+.home-card p {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.home-footer {
+  text-align: center;
+  color: #666;
+  padding-top: 1rem;
+}
+
+.home-footer a {
+  color: #666;
+}
+
+@media (min-width: 640px) {
+  .home h1 {
+    font-size: 2.2rem;
+  }
+  
+  .home-sections {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
