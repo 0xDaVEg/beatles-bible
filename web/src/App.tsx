@@ -30,6 +30,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/history" element={<HistoryList />} />
             <Route path="/history/:year/:month/:day/:slug" element={<HistoryDetail />} />
+            <Route path="/:year/:month/:day/:slug" element={<HistoryDetail />} />
             <Route path="/songs" element={<SongsList />} />
             <Route path="/songs/:slug" element={<SongDetail />} />
             <Route path="/albums" element={<AlbumsList />} />
