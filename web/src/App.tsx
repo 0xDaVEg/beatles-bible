@@ -32,13 +32,18 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/history" element={<HistoryList />} />
             <Route path="/history/:year/:month/:day/:slug" element={<HistoryDetail />} />
+            <Route path="/history/:year/:month/:day/:slug/:page" element={<HistoryDetail />} />
             <Route path="/:year/:month/:day/:slug" element={<HistoryDetail />} />
+            <Route path="/:year/:month/:day/:slug/:page" element={<HistoryDetail />} />
             <Route path="/songs" element={<SongsList />} />
             <Route path="/songs/:slug" element={<SongDetail />} />
+            <Route path="/songs/:slug/:page" element={<SongDetail />} />
             <Route path="/albums" element={<AlbumsList />} />
             <Route path="/albums/:slug" element={<AlbumDetail />} />
+            <Route path="/albums/:slug/:page" element={<AlbumDetail />} />
             <Route path="/people" element={<PeopleList />} />
             <Route path="/people/:slug" element={<PersonDetail />} />
+            <Route path="/people/:slug/:page" element={<PersonDetail />} />
           </Routes>
         </main>
       </div>
