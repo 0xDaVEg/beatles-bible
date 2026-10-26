@@ -4,13 +4,32 @@ import songsData from '../data/songs.json';
 import './Detail.css';
 
 function SongDetail() {
-  const { slug } = useParams();
+  const { slug, page } = useParams();
   const [item, setItem] = useState<any>(null);
 
   useEffect(() => {
-    const found = songsData.find((s: any) => s.slug === slug);
+    let found = null;
+    
+    if (page) {
+      const pageNum = parseInt(page);
+      if (pageNum > 1) {
+        found = songsData.find((p: any) => p.url && p.url.includes(`/${slug}/${pageNum}/`));
+        if (!found) {
+          found = songsData.find((p: any) => p.slug === slug + '-' + pageNum);
+        }
+      } else {
+        found = songsData.find((p: any) => p.slug === slug && (!p.url || !p.url.match(/\/\d+\/$/)));
+      }
+    } else {
+      found = songsData.find((p: any) => p.slug === slug && (!p.url || !p.url.match(/\/\d+\/$/)));
+    }
+    
+    if (!found) {
+      found = songsData.find((p: any) => p.slug === slug);
+    }
+    
     setItem(found);
-  }, [slug]);
+  }, [slug, page]);
 
   if (!item) {
     return <div className="detail"><p>Loading...</p></div>;

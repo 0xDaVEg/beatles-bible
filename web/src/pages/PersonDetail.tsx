@@ -9,21 +9,28 @@ function PersonDetail() {
 
   useEffect(() => {
     // Try to find the main page first
-    const baseSlug = slug?.replace(/-\d+$/, '');
-    let found = peopleData.find((p: any) => p.slug === baseSlug || p.slug === slug);
+    let found = null;
     
-    // If page is specified and different, look for it
-    if (page && page !== '1') {
-      const pageSlug = baseSlug ? baseSlug + '-' + page : slug + '-' + page;
-      const foundPage = peopleData.find((p: any) => p.slug === pageSlug);
-      if (foundPage) {
-        found = foundPage;
+    if (page) {
+      const pageNum = parseInt(page);
+      if (pageNum > 1) {
+        // Look for the specific page
+        found = peopleData.find((p: any) => p.url && p.url.includes(`/${slug}/${pageNum}/`));
+        if (!found) {
+          found = peopleData.find((p: any) => p.slug === slug + '-' + pageNum);
+        }
+        if (!found) {
+          found = peopleData.find((p: any) => p.slug === slug && p.url && p.url.includes(`/${pageNum}/`));
+        }
+      } else {
+        found = peopleData.find((p: any) => p.slug === slug && (!p.url || !p.url.match(/\/\d+\/$/)));
       }
-    } else if (slug && slug.match(/-\d+$/)) {
-      const foundPage = peopleData.find((p: any) => p.slug === slug);
-      if (foundPage) {
-        found = foundPage;
-      }
+    } else {
+      found = peopleData.find((p: any) => p.slug === slug && (!p.url || !p.url.match(/\/\d+\/$/)));
+    }
+    
+    if (!found) {
+      found = peopleData.find((p: any) => p.slug === slug);
     }
     
     setItem(found);
