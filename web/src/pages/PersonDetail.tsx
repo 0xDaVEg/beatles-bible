@@ -1,58 +1,36 @@
-import { useParams, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import peopleData from '../data/people.json';
+import Pagination from '../components/Pagination';
+import type { ArchiveItem } from '../lib/archive';
+import { findItem, handleContentClick } from '../lib/archive';
 import './Detail.css';
 
-function PersonDetail() {
-  const { slug, page } = useParams();
-  const [item, setItem] = useState<any>(null);
+const items = peopleData as unknown as ArchiveItem[];
 
-  useEffect(() => {
-    // Try to find the main page first
-    let found = null;
-    
-    if (page) {
-      const pageNum = parseInt(page);
-      if (pageNum > 1) {
-        // Look for the specific page
-        found = peopleData.find((p: any) => p.url && p.url.includes(`/${slug}/${pageNum}/`));
-        if (!found) {
-          found = peopleData.find((p: any) => p.slug === slug + '-' + pageNum);
-        }
-        if (!found) {
-          found = peopleData.find((p: any) => p.slug === slug && p.url && p.url.includes(`/${pageNum}/`));
-        }
-      } else {
-        found = peopleData.find((p: any) => p.slug === slug && (!p.url || !p.url.match(/\/\d+\/$/)));
-      }
-    } else {
-      found = peopleData.find((p: any) => p.slug === slug && (!p.url || !p.url.match(/\/\d+\/$/)));
-    }
-    
-    if (!found) {
-      found = peopleData.find((p: any) => p.slug === slug);
-    }
-    
-    setItem(found);
-  }, [slug, page]);
+function PersonDetail() {
+  const location = useLocation();
+  const item = findItem(items, location.pathname);
 
   if (!item) {
-    return <div className="detail"><p>Loading...</p></div>;
+    return (
+      <div className="detail">
+        <p>Page not found.</p>
+        <Link to="/people" className="back-link">← Back to People</Link>
+      </div>
+    );
   }
 
   return (
     <div className="detail">
       <Link to="/people" className="back-link">← Back to People</Link>
-      <h1>{item.title.replace(/ – .*$/, '').replace(/ - .*$/, '')}</h1>
-      <div className="detail-content" dangerouslySetInnerHTML={{ __html: item.content }} />
-      {item.images && item.images.length > 0 && (
-        <div className="detail-images">
-          <h3>Images</h3>
-          {item.images.map((img: string, idx: number) => (
-            <img key={idx} src={img} alt="" className="detail-image" />
-          ))}
-        </div>
-      )}
+      <h1>{item.title}</h1>
+      <Pagination item={item} />
+      <div
+        className="detail-content"
+        onClick={handleContentClick}
+        dangerouslySetInnerHTML={{ __html: item.content }}
+      />
+      <Pagination item={item} />
       <div className="detail-source">
         <a href={item.url} target="_blank" rel="noopener noreferrer">View original on Beatles Bible</a>
       </div>

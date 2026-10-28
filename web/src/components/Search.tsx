@@ -1,64 +1,51 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import historyData from '../data/history.json';
 import songsData from '../data/songs.json';
 import albumsData from '../data/albums.json';
+import type { ArchiveItem } from '../lib/archive';
+import { listableItems } from '../lib/archive';
 import './Search.css';
+
+interface SearchResult {
+  type: string;
+  title: string;
+  path: string;
+}
+
+const historyItems = listableItems(historyData as unknown as ArchiveItem[]);
+const songItems = listableItems(songsData as unknown as ArchiveItem[]);
+const albumItems = listableItems(albumsData as unknown as ArchiveItem[]);
 
 function Search() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<any[]>([]);
   const [showResults, setShowResults] = useState(false);
 
-  useEffect(() => {
-    if (query.trim().length < 2) {
-      setResults([]);
-      setShowResults(false);
-      return;
-    }
+  const q = query.trim().toLowerCase();
+  const results: SearchResult[] = [];
 
-    const q = query.toLowerCase();
-    const songMatches: any[] = [];
-    const albumMatches: any[] = [];
-    const historyMatches: any[] = [];
-
-    historyData.forEach((item: any) => {
+  if (q.length >= 2) {
+    songItems.forEach((item) => {
       if (item.title.toLowerCase().includes(q)) {
-        historyMatches.push({
-          type: 'History',
-          title: item.title,
-          subtitle: item.date,
-          path: item.url.replace('https://www.beatlesbible.com', '')
-        });
+        results.push({ type: 'Song', title: item.title, path: item.path });
       }
     });
 
-    songsData.forEach((item: any) => {
+    albumItems.forEach((item) => {
       if (item.title.toLowerCase().includes(q)) {
-        songMatches.push({
-          type: 'Song',
-          title: item.title,
-          subtitle: item.title,
-          path: item.url.replace('https://www.beatlesbible.com', '')
-        });
+        results.push({ type: 'Album', title: item.title, path: item.path });
       }
     });
 
-    albumsData.forEach((item: any) => {
+    historyItems.forEach((item) => {
       if (item.title.toLowerCase().includes(q)) {
-        albumMatches.push({
-          type: 'Album',
-          title: item.title,
-          subtitle: item.title,
-          path: item.url.replace('https://www.beatlesbible.com', '')
-        });
+        results.push({ type: 'History', title: item.title, path: item.path });
       }
     });
+  }
 
-    const matches = [...songMatches, ...albumMatches, ...historyMatches];
-    setResults(matches.slice(0, 30));
-    setShowResults(true);
-  }, [query]);
+  const visibleResults = results.slice(0, 30);
+  const showPanel = showResults && q.length >= 2;
 
   return (
     <div className="search-container">
@@ -67,15 +54,19 @@ function Search() {
         className="search-input"
         placeholder="Search songs, albums, history..."
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          const value = e.target.value;
+          setQuery(value);
+          setShowResults(value.trim().length >= 2);
+        }}
         onBlur={() => setTimeout(() => setShowResults(false), 200)}
-        onFocus={() => query.length >= 2 && setShowResults(true)}
+        onFocus={() => setShowResults(q.length >= 2)}
       />
-      {showResults && results.length > 0 && (
+      {showPanel && visibleResults.length > 0 && (
         <div className="search-results">
-          {results.map((result, idx) => (
+          {visibleResults.map((result) => (
             <Link
-              key={idx}
+              key={`${result.type}-${result.path}`}
               to={result.path}
               className="search-result-item"
               onClick={() => {
@@ -89,7 +80,7 @@ function Search() {
           ))}
         </div>
       )}
-      {showResults && results.length === 0 && query.length >= 2 && (
+      {showPanel && visibleResults.length === 0 && (
         <div className="search-results">
           <div className="search-no-results">No results found</div>
         </div>
